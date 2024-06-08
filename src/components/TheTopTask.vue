@@ -89,6 +89,16 @@ const stopTask = () => {
   state.nowTime = 0
   state.taskname = ''
 }
+
+const restartTask = (taskname: string) => {
+  state.taskname = taskname
+
+  startTask()
+}
+
+defineExpose({
+  restartTask
+})
 </script>
 
 <template>

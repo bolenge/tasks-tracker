@@ -1,15 +1,9 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import TheMenu from './components/TheMenu.vue'
 import TheTopTask from './components/TheTopTask.vue'
 import { formatTimestamps, durationBetweenTimestamps } from './utils/helpers'
-
-type Task = {
-  id: number,
-  name: string,
-  start: number,
-  end: number
-}
+import { Task } from './types/task'
 
 type State = {
   tasks: Task[],
@@ -17,8 +11,9 @@ type State = {
   nowTime?: number,
   taskname?: string,
   startTime?: number,
+  taskToEdit?: string,
   intervalTime?: number,
-  taskInProgress?: boolean
+  taskInProgress?: boolean,
 }
 
 const state = reactive<State>({
@@ -28,12 +23,27 @@ const state = reactive<State>({
   taskInProgress: false
 })
 
+const theTopTask = ref<{
+  restartTask: Function
+}>()
+
 const onError = (error: string) => {
   state.error = error
 }
 
 const onStopTask = (task: Task) => {
   state.tasks.unshift(task)
+  state.taskToEdit = ''
+}
+
+const editTask = (task: Task) => {
+  if (theTopTask.value) {
+    theTopTask.value.restartTask(task.name)
+  }
+}
+
+const deleteTask = (task: Task) => {
+  state.tasks = state.tasks.filter(t => t.id !== task.id)
 }
 
 </script>
@@ -48,8 +58,10 @@ const onStopTask = (task: Task) => {
       <div class="w-4/5">
         <div>
           <TheTopTask
-            @error="onError"
+            :task-to-edit="state.taskToEdit"
+            ref="theTopTask"
             @stop="onStopTask"
+            @error="onError"
           />
         </div>
 
@@ -90,11 +102,17 @@ const onStopTask = (task: Task) => {
                         {{ durationBetweenTimestamps(task.start, task.end) }}
                       </span>
 
-                      <span class="btn btn-sm btn-outline font-light rounded-lg me-3">
+                      <span
+                        class="btn btn-sm btn-outline font-light rounded-lg me-3"
+                        @click="editTask(task)"
+                      >
                         Edit
                       </span>
 
-                      <span class="btn btn-sm btn-outline font-light btn-error rounded-lg">
+                      <span
+                        class="btn btn-sm btn-outline font-light btn-error rounded-lg"
+                        @click="deleteTask(task)"
+                      >
                         Delete
                       </span>
                     </td>

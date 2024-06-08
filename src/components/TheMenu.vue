@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <ul class="menu bg-base-200 w-64 rounded-box h-full">
+  <ul class="menu bg-base-200 w-full rounded-box h-full">
     <h3 class="text-center mt-3 mb-5 text-lg font-bold">
       <span class="text-sky-500">Tasks</span> Tracker
     </h3>

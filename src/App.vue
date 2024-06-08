@@ -93,7 +93,7 @@ const deleteTask = (task: Task) => {
 
                 <template v-for="(task) in state.tasks" :key="task">
                   <tr>
-                    <td class="w-[65%]">{{ task.name }}</td>
+                    <td class="w-[63%]">{{ task.name }}</td>
                     <td class="">
                       <span class="me-10">
                         {{ formatTimestamps(task.start) }}
@@ -106,7 +106,7 @@ const deleteTask = (task: Task) => {
                         class="btn btn-sm btn-outline font-light rounded-lg me-3"
                         @click="editTask(task)"
                       >
-                        Edit
+                        Restart
                       </span>
 
                       <span

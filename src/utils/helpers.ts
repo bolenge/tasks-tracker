@@ -10,5 +10,9 @@ export const durationBetweenTimestamps = (start: number, end: number) => {
 }
 
 export const formatTimestamps = (ts: number) => {
-  return Intl.DateTimeFormat('fr', { hour: '2-digit', minute: '2-digit' }).format(ts)
+  return Intl.DateTimeFormat('fr-FR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  }).format(ts)
 }

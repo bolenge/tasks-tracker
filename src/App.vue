@@ -36,6 +36,9 @@ const onError = (error: string) => {
 
 const onStopTask = (task: Task) => {
   state.tasks.unshift(task)
+
+  updateAllTasks()
+  
   state.taskToEdit = ''
 }
 
@@ -45,8 +48,18 @@ const onRestartTask = (task: Task) => {
   }
 }
 
+const updateAllTasks = async () => {
+  try {
+    await TaskService.updateAll(state.tasks)
+  } catch (error) {
+    console.log('ERROR DELETE TASK', error);
+  }
+}
+
 const deleteTask = (task: Task) => {
   state.tasks = state.tasks.filter(t => t.id !== task.id)
+
+  updateAllTasks()
 }
 
 const copyToKeyboard = (taskname: string) => {

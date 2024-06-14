@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Task } from "../types/task";
 
 const JSON_BIN_MASTER_KEY = import.meta.env.VITE_JSON_BIN_MASTER_KEY
 
@@ -9,8 +10,20 @@ const instance = axios.create({
   }
 })
 
-export async function getAll() {
+/**
+ * Returns list of all tasks
+ * @returns tasks
+ */
+export async function getAll(): Promise<Task[]> {
   const res = await instance.get('/latest')
 
   return res.data.record
+}
+
+/**
+ * Update all tasks
+ * @param {Task[]} tasks new tasks version
+ */
+export async function updateAll(tasks: Task[]): Promise<void> {
+  await instance.put('/', tasks)
 }

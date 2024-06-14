@@ -36,7 +36,7 @@ const onStopTask = (task: Task) => {
   state.taskToEdit = ''
 }
 
-const editTask = (task: Task) => {
+const onRestartTask = (task: Task) => {
   if (theTopTask.value) {
     theTopTask.value.restartTask(task.name)
   }
@@ -102,19 +102,54 @@ const deleteTask = (task: Task) => {
                         {{ durationBetweenTimestamps(task.start, task.end) }}
                       </span>
 
-                      <span
+                      <button
                         class="btn btn-sm btn-outline font-light rounded-lg me-3"
-                        @click="editTask(task)"
                       >
-                        Restart
-                      </span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="1em"
+                          height="1em"
+                          viewBox="0 0 256 256"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M184 66H40a6 6 0 0 0-6 6v144a6 6 0 0 0 6 6h144a6 6 0 0 0 6-6V72a6 6 0 0 0-6-6m-6 144H46V78h132Zm44-170v144a6 6 0 0 1-12 0V46H72a6 6 0 0 1 0-12h144a6 6 0 0 1 6 6"
+                          />
+                        </svg>
+                      </button>
 
-                      <span
+                      <button
+                        class="btn btn-sm btn-outline btn-primary font-light rounded-lg me-3"
+                        @click="onRestartTask(task)"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="1em"
+                          height="1em"
+                          viewBox="0 0 256 256"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M231.36 116.19L87.28 28.06a14 14 0 0 0-14.18-.27A13.69 13.69 0 0 0 66 39.87v176.26a13.69 13.69 0 0 0 7.1 12.08a14 14 0 0 0 14.18-.27l144.08-88.13a13.82 13.82 0 0 0 0-23.62m-6.26 13.38L81 217.7a2 2 0 0 1-2.06 0a1.78 1.78 0 0 1-1-1.61V39.87a1.78 1.78 0 0 1 1-1.61A2.06 2.06 0 0 1 80 38a2 2 0 0 1 1 .31l144.1 88.12a1.82 1.82 0 0 1 0 3.14"/>
+                        </svg>
+                      </button>
+
+                      <button
                         class="btn btn-sm btn-outline font-light btn-error rounded-lg"
                         @click="deleteTask(task)"
                       >
-                        Delete
-                      </span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="1em"
+                          height="1em"
+                          viewBox="0 0 256 256"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M216 50h-42V40a22 22 0 0 0-22-22h-48a22 22 0 0 0-22 22v10H40a6 6 0 0 0 0 12h10v146a14 14 0 0 0 14 14h128a14 14 0 0 0 14-14V62h10a6 6 0 0 0 0-12M94 40a10 10 0 0 1 10-10h48a10 10 0 0 1 10 10v10H94Zm100 168a2 2 0 0 1-2 2H64a2 2 0 0 1-2-2V62h132Zm-84-104v64a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0m48 0v64a6 6 0 0 1-12 0v-64a6 6 0 0 1 12 0"
+                          />
+                        </svg>
+                      </button>
                     </td>
                   </tr>
                 </template>

@@ -46,6 +46,10 @@ const deleteTask = (task: Task) => {
   state.tasks = state.tasks.filter(t => t.id !== task.id)
 }
 
+const copyToKeyboard = (taskname: string) => {
+  navigator.clipboard.writeText(taskname)
+}
+
 </script>
 
 <template>
@@ -104,6 +108,7 @@ const deleteTask = (task: Task) => {
 
                       <button
                         class="btn btn-sm btn-outline font-light rounded-lg me-3"
+                        @click="copyToKeyboard(task.name)"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

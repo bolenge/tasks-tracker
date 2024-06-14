@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import TheMenu from './components/TheMenu.vue'
 import TheTopTask from './components/TheTopTask.vue'
 import { formatTimestamps, durationBetweenTimestamps } from './utils/helpers'
 import { Task } from './types/task'
+import * as TaskService from './services/TaskService'
 
 type State = {
   tasks: Task[],
@@ -13,13 +14,15 @@ type State = {
   startTime?: number,
   taskToEdit?: string,
   intervalTime?: number,
-  taskInProgress?: boolean,
+  tasksLoading?: boolean,
+  taskInProgress?: boolean
 }
 
 const state = reactive<State>({
   tasks: [],
   error: '',
   taskname: '',
+  tasksLoading: true,
   taskInProgress: false
 })
 
@@ -49,6 +52,16 @@ const deleteTask = (task: Task) => {
 const copyToKeyboard = (taskname: string) => {
   navigator.clipboard.writeText(taskname)
 }
+
+onMounted(async () => {
+  try {
+    state.tasks = await TaskService.getAll()
+  } catch (error) {
+    console.log('ERROR LOADING TASKS :', error);
+  } finally {
+    state.tasksLoading = false
+  }
+})
 
 </script>
 
@@ -89,9 +102,20 @@ const copyToKeyboard = (taskname: string) => {
                 </tr>
               </thead>
               <tbody>
-                <template v-if="!state.tasks.length">
+                
+                <template v-if="state.tasksLoading">
                   <tr class="border-b-0">
-                    <td colspan="2" class="text-center text-slate-400 text-light">No task yet...</td>
+                    <td colspan="2" class="text-center text-slate-400 text-light">
+                      <span class="loading loading-spinner loading-lg"></span>
+                    </td>
+                  </tr>
+                </template>
+
+                <template v-else-if="!state.tasks.length">
+                  <tr class="border-b-0">
+                    <td colspan="2" class="text-center text-slate-400 text-light">
+                      No task yet...
+                    </td>
                   </tr>
                 </template>
 

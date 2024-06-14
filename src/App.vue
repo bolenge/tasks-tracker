@@ -30,8 +30,16 @@ const theTopTask = ref<{
   restartTask: Function
 }>()
 
+const toast = ref(null)
+
 const onError = (error: string) => {
   state.error = error
+
+  const toastError = setTimeout(() => {
+    state.error = ''
+
+    clearTimeout(toastError)
+  }, 8000)
 }
 
 const onStopTask = (task: Task) => {
@@ -52,7 +60,7 @@ const updateAllTasks = async () => {
   try {
     await TaskService.updateAll(state.tasks)
   } catch (error) {
-    console.log('ERROR DELETE TASK', error);
+    onError('Error updating tasks !')
   }
 }
 
@@ -70,7 +78,7 @@ onMounted(async () => {
   try {
     state.tasks = await TaskService.getAll()
   } catch (error) {
-    console.log('ERROR LOADING TASKS :', error);
+    onError('Error loading tasks !')
   } finally {
     state.tasksLoading = false
   }
@@ -97,11 +105,12 @@ onMounted(async () => {
 
         <div class="mt-7 px-1">
           <template v-if="state.error">
-            <div role="alert" class="alert alert-error mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span>
-                {{ state.error }}
-              </span>
+            <div ref="toast" class="toast toast-top toast-end">
+              <div class="alert alert-error">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+
+                <span>{{ state.error }}</span>
+              </div>
             </div>
           </template>
 

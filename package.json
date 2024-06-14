@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@lukeed/uuid": "^2.0.1",
+    "@primevue/themes": "^4.0.0-rc.1",
     "axios": "^1.7.2",
+    "primevue": "^4.0.0-rc.1",
     "vue": "^3.4.21"
   },
   "devDependencies": {

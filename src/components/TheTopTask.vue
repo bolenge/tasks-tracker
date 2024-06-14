@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue'
+import { v4 as uuid } from '@lukeed/uuid'
 import { durationBetweenTimestamps } from '../utils/helpers'
 
 /**
@@ -7,7 +8,6 @@ import { durationBetweenTimestamps } from '../utils/helpers'
  */ 
 type State = {
   error?: string,
-  taskID: number,
   nowTime?: number,
   taskname?: string,
   startTime?: number,
@@ -24,7 +24,6 @@ const emit = defineEmits(['error', 'start', 'stop'])
  * State
  */ 
 const state = reactive<State>({
-  taskID: 0,
   taskname: ''
 })
 
@@ -63,11 +62,6 @@ const startTask = () => {
   timeInProgress()
 }
 
-const getAnID = () => {
-  state.taskID++
-  return state.taskID
-}
-
 const stopTask = () => {
   if (!state.taskInProgress) {
     emit('error', 'No tasks in progress !')
@@ -78,7 +72,7 @@ const stopTask = () => {
   state.taskInProgress = false
 
   emit('stop', {
-    id: getAnID(),
+    id: uuid(),
     name: state.taskname,
     start: state.startTime,
     end: Date.now()
